@@ -18,14 +18,14 @@ export class AppContainer extends HTMLElement {
 
     async render() {
         if (this.shadowRoot) {
-            this.innerHTML = ""
+            this.shadowRoot.innerHTML = ""
 
             const link = this.ownerDocument.createElement("link")
             link.setAttribute("rel", "stylesheet")
             link.setAttribute("href", "/src/index.css")
             this.shadowRoot?.appendChild(link)
 
-            if (state.episodes === null) {
+            if (state.characters?.length !== 338) {
                 const state = this.ownerDocument.createElement("h1")
                 state.textContent = "LOADING..."
             } else {
@@ -34,6 +34,7 @@ export class AppContainer extends HTMLElement {
                     episodeCard.setAttribute("name", `${episode.name}`)
                     episodeCard.setAttribute("air_date", `${episode.air_date}`)
                     episodeCard.setAttribute("episode", `${episode.episode}`)
+                    episodeCard.setAttribute("characters", `${JSON.stringify(episode.characters)}`)
                     this.shadowRoot?.appendChild(episodeCard)
                 })
             }

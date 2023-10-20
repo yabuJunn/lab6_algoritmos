@@ -1,3 +1,6 @@
+import { extractNumbersFromString } from "../../utilities/extractNumbers";
+import { state } from "../../store/index";
+
 const enum episodeCardProperties {
     name = "name",
     air_date = "air_date",
@@ -57,7 +60,7 @@ export class episodeCard extends HTMLElement {
         link.setAttribute("rel", "stylesheet")
         link.setAttribute("href", "/src/components/episodeCard/episodeCard.css")
         this.shadowRoot?.appendChild(link)
-        
+
         //Creation of main container
         const cardCotainer = this.ownerDocument.createElement("div")
         cardCotainer.setAttribute("class", "episodeCard")
@@ -76,8 +79,28 @@ export class episodeCard extends HTMLElement {
         airDateText.textContent = `This episode was aired on ${this.properties.air_date}`
         cardCotainer.appendChild(airDateText)
 
-        const charactersList = this.ownerDocument.createElement("p")
-        charactersList.textContent = this.properties.characters
+        const characterListTitle = this.ownerDocument.createElement("p")
+        characterListTitle.textContent = "These characters appeared in this episode:"
+        cardCotainer.appendChild(characterListTitle)
+
+        const charactersList = this.ownerDocument.createElement("ul")
+        
+
+        const charactersJSON = JSON.parse(this.properties.characters)
+        charactersJSON.forEach((character: string) => {
+            state.characters?.forEach((comparationCharacter: any) => {
+                if (comparationCharacter.id === extractNumbersFromString(character)) {
+                    const listElement = this.ownerDocument.createElement("li")
+                    charactersList.appendChild(listElement)
+                    
+                    const listText = this.ownerDocument.createElement("p")
+                    listText.textContent = comparationCharacter.name
+                    listElement.appendChild(listText)
+                }
+
+            })
+        })
+
         cardCotainer.appendChild(charactersList)
 
     }
