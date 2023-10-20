@@ -11,6 +11,6 @@ export enum Actions {
 }
 
 export interface AppState {
-    episodes: [],
-    characters: []
+    episodes: [] | null,
+    characters: [] | null
 }

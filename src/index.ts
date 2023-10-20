@@ -1,11 +1,15 @@
 import { requestData } from "./services/requestData"
-import { state, dispatch } from "./store/index"
+import { state, dispatch, addObserver } from "./store/index"
 import { arrangeEpisodes } from "./utilities/data"
+import "./components/export"
+
+arrangeEpisodes("https://rickandmortyapi.com/api/episode")
 
 export class AppContainer extends HTMLElement {
     constructor() {
         super()
         this.attachShadow({ mode: "open" })
+        addObserver(this)
     }
 
     connectedCallback() {
@@ -13,17 +17,29 @@ export class AppContainer extends HTMLElement {
     }
 
     async render() {
+        if (this.shadowRoot) {
+            this.innerHTML = ""
 
-        arrangeEpisodes("https://rickandmortyapi.com/api/episode")
+            const link = this.ownerDocument.createElement("link")
+            link.setAttribute("rel", "stylesheet")
+            link.setAttribute("href", "/src/index.css")
+            this.shadowRoot?.appendChild(link)
 
-        const link = this.ownerDocument.createElement("link")
-        link.setAttribute("rel", "stylesheet")
-        link.setAttribute("href", "/src/index.css")
-        this.shadowRoot?.appendChild(link)
+            if (state.episodes === null) {
+                const state = this.ownerDocument.createElement("h1")
+                state.textContent = "LOADING..."
+            } else {
+                state.episodes.forEach( (episode: any) => {
+                    const episodeCard = this.ownerDocument.createElement("episode-card")
+                    episodeCard.setAttribute("name", `${episode.name}`)
+                    episodeCard.setAttribute("air_date", `${episode.air_date}`)
+                    episodeCard.setAttribute("episode", `${episode.episode}`)
+                    this.shadowRoot?.appendChild(episodeCard)
+                })
+            }
+        }
 
-        state.episodes.forEach(() => {
-            
-        })
+
 
     }
 }
