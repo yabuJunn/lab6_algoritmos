@@ -97,19 +97,23 @@ export class episodeCard extends HTMLElement {
                     listText.textContent = comparationCharacter.name
                     listElement.appendChild(listText)
 
-                    listText.addEventListener("click", () => {
-                        console.log()
-                        if (listElement.querySelector("img") === null) {
-                            const img = this.ownerDocument.createElement("img")
-                            img.setAttribute("src", comparationCharacter.image)
-                            listElement.appendChild(img)
-                            console.log("No hay imagen")
-                        } else {
-                            const image = listElement.querySelector("img")
-                            listElement.removeChild(image!)
-                            console.log("Si imagen")
-                        }
-                    })
+                    const img = this.ownerDocument.createElement("img")
+                    img.setAttribute("src", comparationCharacter.image)
+                    listElement.appendChild(img)
+
+                    // listText.addEventListener("click", () => {
+                    //     console.log()
+                    //     if (listElement.querySelector("img") === null) {
+                    //         const img = this.ownerDocument.createElement("img")
+                    //         img.setAttribute("src", comparationCharacter.image)
+                    //         listElement.appendChild(img)
+                    //         console.log("No hay imagen")
+                    //     } else {
+                    //         const image = listElement.querySelector("img")
+                    //         listElement.removeChild(image!)
+                    //         console.log("Si imagen")
+                    //     }
+                    // })
 
                 }
 

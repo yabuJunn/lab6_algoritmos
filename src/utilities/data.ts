@@ -9,12 +9,11 @@ export const arrangeEpisodes = async (url: string) => {
         addEpisodes(JSON.stringify(dataEpisodes))
     )
     const charactersData: any = await arrangeCharacters(dataEpisodes)
-    setTimeout( () => {
-        storageCharacters(charactersData)
-    }, 500)
-    
-}
+    console.log({charactersData})
+    //storageCharacters(charactersData)
 
+
+}
 
 const arrangeCharacters = async (dataEpisodes: any) => {
     const charactersLinks = createCharactersLinksArray(dataEpisodes)
@@ -35,9 +34,11 @@ const createCharactersLinksArray = (dataEpisodes: any) => {
 
 const fetchCharacters = async (charactersLinks: any) => {
     const charactersArray: any = []
-    charactersLinks.forEach(async (element: any) => {
-        charactersArray.push(await requestData(element))
-    });
+    for (let i = 0; i < charactersLinks.length; i++) {
+        const e = charactersLinks[i];
+        const p = await requestData(e)
+        charactersArray.push(p)
+    }
     return charactersArray
 }
 
